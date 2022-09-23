@@ -1,0 +1,25 @@
+#include <Adafruit_LiquidCrystal.h>
+
+
+Adafruit_LiquidCrystal lcd(0);
+
+void setup()
+{
+  lcd.begin(16, 2);
+  lcd.print("VALUES");
+  
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  lcd.setCursor(0, 1);
+  if(Serial.available()>0){
+  int x= Serial.read();
+    if(x==1){Serial.println(x);
+            lcd.print(x);}
+    else if(x==0){Serial.println(x);
+            lcd.print(x);}
+    
+  }
+}
