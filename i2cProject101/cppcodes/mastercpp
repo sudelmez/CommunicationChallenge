@@ -1,0 +1,26 @@
+#include <Wire.h>
+int buton=0;
+void setup()
+{
+  Serial.begin(9600);
+  Wire.begin();
+  pinMode(8, INPUT);
+}
+
+void loop()
+{
+ buton= digitalRead(8);
+ 
+  
+  Wire.beginTransmission(9); 	
+  if(buton==1) {Wire.write(1);
+                Serial.println(buton);
+                Wire.endTransmission();
+                }
+  else {Wire.write(0);
+        Serial.println(buton);
+        Wire.endTransmission();
+        }
+ 
+delay(200);
+}
