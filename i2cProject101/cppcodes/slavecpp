@@ -1,0 +1,39 @@
+#include <Wire.h>
+#include <Adafruit_LiquidCrystal.h>
+
+int buton=0;
+
+Adafruit_LiquidCrystal lcd(0);
+
+void setup()
+{
+  Serial.begin(9600);
+  lcd.begin(16, 2);
+  lcd.setCursor(0, 0);
+  lcd.print("THE BUTTON IS");
+  Wire.begin(9); 
+ 
+  
+}
+
+void receiveEvent(int butonn){
+	buton=Wire.read();
+  Serial.println(buton);
+}
+
+void loop()
+{
+  Wire.onReceive(receiveEvent);
+  if(buton==1){
+    lcd.setCursor(0,1);
+    lcd.print("Pressed");
+    delay(200);
+  }
+  
+else if(buton==0){
+    lcd.setCursor(0,1);
+    lcd.print("Not Pressed");
+  delay(200);
+  }
+
+}
