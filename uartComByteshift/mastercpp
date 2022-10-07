@@ -1,0 +1,50 @@
+#define Sensor1 1
+#define Sensor2 2
+
+#define START_FRAME         0xABCD     	
+
+#include <SoftwareSerial.h>
+SoftwareSerial CommandSerialCom(2,3);        // RX, TX
+
+
+typedef struct {
+  uint16_t start;
+  int16_t id;
+  int16_t data;
+  uint16_t checksum;
+}SerialCommand;
+
+
+SerialCommand Command;
+
+int sensorValue = 0;
+
+void setup()
+{
+  pinMode(A0, INPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
+  CommandSerialCom.begin(9600);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  // read the value from the sensor
+  sensorValue = analogRead(A0);
+  
+  Command.start=(uint16_t)START_FRAME;
+  Command.id=(int16_t)1;
+  Command.data=(int16_t)sensorValue;
+  Command.checksum=(uint16_t)Sensor1;
+  
+  
+  CommandSerialCom.write((uint8_t *)&Command,sizeof(Command));
+  Serial.write((uint8_t *)&Command,sizeof(Command));
+  Serial.println();
+  
+  digitalWrite(LED_BUILTIN, HIGH);
+  
+  digitalWrite(LED_BUILTIN, LOW);
+ 
+  delay(30);
+}
